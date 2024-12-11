@@ -1,8 +1,4 @@
 defmodule UkraineTaxidExTest do
-  use ExUnit.Case
+  use ExUnit.Case, async: true
   doctest UkraineTaxidEx
-
-  test "greets the world" do
-    assert UkraineTaxidEx.hello() == :world
-  end
 end

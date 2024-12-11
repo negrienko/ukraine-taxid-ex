@@ -21,4 +21,4 @@ IEx.configure(
     |> IO.chardata_to_string()
 )
 
-alias UkraineTaxidEx.{Itin, Edrpou}
+alias UkraineTaxidEx.{Commons, Edrpou, Itin}

@@ -1,5 +1,5 @@
 defmodule UkraineTaxidEx.BaseParser do
-  @type options :: [incomplete: boolean]
+  @type options :: [normalize?: boolean, clean?: boolean]
   @callback parse(string :: String.t(), options :: options()) :: {:ok, term} | {:error, atom}
 
   defmacro __using__(_) do
@@ -7,13 +7,6 @@ defmodule UkraineTaxidEx.BaseParser do
       @behaviour UkraineTaxidEx.BaseParser
 
       alias UkraineTaxidEx.BaseParser
-
-      @impl BaseParser
-      @spec parse(string :: String.t(), options :: BaseParser.options()) ::
-              {:ok, term} | {:error, atom}
-      def parse(data, options \\ [incomplete: false])
-
-      defoverridable parse: 2, parse: 1
     end
   end
 end

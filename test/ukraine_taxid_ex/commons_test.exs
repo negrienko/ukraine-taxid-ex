@@ -23,9 +23,9 @@ defmodule UkraineTaxidEx.CommonsTest do
     end
 
     test "handles strings with non-digit characters" do
-      assert Commons.digits("1-2-3") == [1, 2, 3]
-      assert Commons.digits("A1B2C3") == [1, 2, 3]
-      assert Commons.digits("12.34") == [1, 2, 3, 4]
+      assert Commons.digits("1-2-3", 0, true) == [1, 2, 3]
+      assert Commons.digits("A1B2C3", 0, true) == [1, 2, 3]
+      assert Commons.digits("12.34", 0, true) == [1, 2, 3, 4]
     end
 
     test "handles empty string" do
@@ -72,6 +72,25 @@ defmodule UkraineTaxidEx.CommonsTest do
 
     test "handles single digit" do
       assert Commons.value_and_check_digits([1]) == {[], 1}
+    end
+  end
+
+  describe "digits_and_check_digit/1" do
+    test "returns tuple with original digits and check digit" do
+      assert Commons.digits_and_check_digit([1, 2, 3, 4]) == {[1, 2, 3, 4], 4}
+    end
+
+    test "works with different digit sequences" do
+      assert Commons.digits_and_check_digit([5, 6, 7, 8]) == {[5, 6, 7, 8], 8}
+      assert Commons.digits_and_check_digit([9, 0, 1, 2]) == {[9, 0, 1, 2], 2}
+    end
+
+    test "handles single digit list" do
+      assert Commons.digits_and_check_digit([1]) == {[1], 1}
+    end
+
+    test "handles empty list" do
+      assert Commons.digits_and_check_digit([]) == {[], nil}
     end
   end
 

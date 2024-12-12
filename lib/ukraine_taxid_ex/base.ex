@@ -1,7 +1,9 @@
 defmodule UkraineTaxidEx.Base do
+  @callback length() :: non_neg_integer()
+  @callback parse(data :: {:ok, String.t()} | String.t(), options :: Keyword.t()) ::
+              {:ok, term} | {:error, atom()}
   @callback to_map(data :: term) :: map()
   @callback to_string(data :: term) :: String.t()
-  @callback length() :: non_neg_integer()
 
   defmacro __using__(_) do
     quote do

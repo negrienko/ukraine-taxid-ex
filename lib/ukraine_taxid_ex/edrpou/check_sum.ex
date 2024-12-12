@@ -5,8 +5,8 @@ defmodule UkraineTaxidEx.Edrpou.CheckSum do
 
   @typedoc """
     Coefficients (weights) for digits to calculate EDRPOU check sum may be two types:
-    base ([1, 2, 3, 4, 5, 6, 7] for EDRPOU < 30M or EDRPOU > 60M)
-    or alternative ([7, 1, 2, 3, 4, 5, 6] if EDRPOU between 30M and 60M)
+    base (`[1, 2, 3, 4, 5, 6, 7] for EDRPOU < 30M or EDRPOU > 60M`)
+    or alternative (`[7, 1, 2, 3, 4, 5, 6] if EDRPOU between 30M and 60M`)
   """
   @type weights_type :: :base | :alternative
 
@@ -17,7 +17,7 @@ defmodule UkraineTaxidEx.Edrpou.CheckSum do
     2. Multiply each digit by its corresponding weight
     3. Sum the products
     4. Take mod 11 of the sum
-    5. If mod 11 is greater or equal than 10, repeat steps 2-4 with doubled weights
+    5. If mod 11 is greater or equal than 10, repeat steps 2-4 with weights +2
   """
   @spec check_sum(digits :: C.digits()) :: integer()
   def check_sum(digits) do
@@ -29,7 +29,7 @@ defmodule UkraineTaxidEx.Edrpou.CheckSum do
     value_digits = value_digits(digits)
 
     case calculate_check_sum(value_digits, weights(type, false)) do
-      s when s >= 10 -> calculate_check_sum(value_digits, weights(type, true))
+      s when s >= 10 -> rem(calculate_check_sum(value_digits, weights(type, true)), 10)
       s -> s
     end
   end

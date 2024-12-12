@@ -1,6 +1,29 @@
 defmodule UkraineTaxidEx.Edrpou.CheckSumTest do
   use ExUnit.Case
   alias UkraineTaxidEx.Edrpou.CheckSum
+  doctest UkraineTaxidEx.Edrpou.Parser
+
+  describe "weights/2" do
+    test "returns base weights by default" do
+      assert CheckSum.weights() == [1, 2, 3, 4, 5, 6, 7]
+    end
+
+    test "returns base weights when not added 2" do
+      assert CheckSum.weights(:base, false) == [1, 2, 3, 4, 5, 6, 7]
+    end
+
+    test "returns alternative weights when added 2" do
+      assert CheckSum.weights(:alternative, false) == [7, 1, 2, 3, 4, 5, 6]
+    end
+
+    test "returns base weights + 2" do
+      assert CheckSum.weights(:base, true) == [3, 4, 5, 6, 7, 8, 9]
+    end
+
+    test "returns alternative weights + 2 " do
+      assert CheckSum.weights(:alternative, true) == [9, 3, 4, 5, 6, 7, 8]
+    end
+  end
 
   describe "check_sum/1" do
     test "calculates correct checksum for EDRPOU with base weights (< 30M) short EDRPOU with leading zeros" do

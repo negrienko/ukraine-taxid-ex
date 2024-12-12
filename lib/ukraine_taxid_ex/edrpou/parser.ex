@@ -21,13 +21,12 @@ defmodule UkraineTaxidEx.Edrpou.Parser do
           | {:error,
              :length_too_short
              | :length_too_long
-             | :invalid_length
              | :invalid_checksum}
 
   @impl BaseParser
 
   @doc """
-  Parses an EDRPOU code string into a structured format.
+  Parses an EDRPOU code string into a structured format (clean and normalize, validate and decompose).
   Options:
   - normalize?: When true, pads string to full EDRPOU length. Defaults to false.
   - clean?: When true, removes non-digit characters before processing. Defaults to false.

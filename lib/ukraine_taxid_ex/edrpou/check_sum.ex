@@ -36,16 +36,39 @@ defmodule UkraineTaxidEx.Edrpou.CheckSum do
 
   defguardp is_base_weights(value) when value < 30_000_000 or value > 60_000_000
 
-  @spec weights(type :: weights_type, double_added? :: boolean()) :: C.digits()
-  defp weights(type \\ :base, double_added \\ false)
-  defp weights(:base, false), do: Enum.to_list(1..7)
+  @doc """
+    Returns a list of weights used for EDRPOU check sum calculation.
+    When double_added is true, adds 2 to each weight in the list.
 
-  defp weights(:alternative, false) do
+    ## Parameters
+      - type: `:base` or `:alternative` weights pattern
+      - double_added: when true, adds 2 to each weight
+
+    ## Examples
+    ```elixir
+        iex> weights(:base)
+        [1, 2, 3, 4, 5, 6, 7]
+
+        iex> weights(:alternative)
+        [7, 1, 2, 3, 4, 5, 6]
+
+        iex> weights(:base, true)
+        [3, 4, 5, 6, 7, 8, 9]
+
+        iex> weights(:alternative, true)
+        [9, 3, 4, 5, 6, 7, 8]
+    ```
+  """
+  @spec weights(type :: weights_type, double_added? :: boolean()) :: C.digits()
+  def weights(type \\ :base, double_added \\ false)
+  def weights(:base, false), do: Enum.to_list(1..7)
+
+  def weights(:alternative, false) do
     base = weights()
     [List.last(base) | Enum.take(base, length(base) - 1)]
   end
 
-  defp weights(type, true) do
+  def weights(type, true) do
     type
     |> weights(false)
     |> Enum.map(&(&1 + 2))

@@ -9,7 +9,7 @@ The package can be installed by adding `ukraine_tax_id` to your list of dependen
 ```elixir
 def deps do
   [
-    {:ukraine_tax_id, "~> 0.1.0"}
+    {:ukraine_tax_id, "~> 0.1.1"}
   ]
 end
 ```

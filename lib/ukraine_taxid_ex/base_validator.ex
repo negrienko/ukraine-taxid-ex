@@ -1,12 +1,12 @@
 defmodule UkraineTaxidEx.BaseValidator do
-  @callback validate(String.t()) ::
-              {:ok, String.t()}
+  @callback validate(code :: String.t()) ::
+              {:ok, code :: String.t()}
               | {:error,
                  :length_too_short | :length_too_long | :invalid_length | :invalid_checksum}
-  @callback violates_length?(String.t()) :: boolean
-  @callback violates_length_too_short?(String.t()) :: boolean
-  @callback violates_length_too_long?(String.t()) :: boolean
-  @callback violates_checksum?(String.t()) :: boolean
+  @callback violates_length?(code :: String.t()) :: boolean
+  @callback violates_length_too_short?(code :: String.t()) :: boolean
+  @callback violates_length_too_long?(code :: String.t()) :: boolean
+  @callback violates_checksum?(code :: String.t()) :: boolean
 
   defmacro __using__(_) do
     quote do
@@ -31,28 +31,25 @@ defmodule UkraineTaxidEx.BaseValidator do
 
       @doc "Check whether a given EDRPOU violates the required length"
       @impl BaseValidator
-      @spec violates_length?(String.t()) :: boolean
-      def violates_length?(string),
-        do: String.length(string) != length()
+      @spec violates_length?(code :: String.t()) :: boolean
+      def violates_length?(code), do: String.length(code) != length()
 
       @doc "Check whether a given EDRPOU too short"
       @impl BaseValidator
-      @spec violates_length_too_short?(String.t()) :: boolean
-      def violates_length_too_short?(string),
-        do: String.length(string) < length()
+      @spec violates_length_too_short?(code :: String.t()) :: boolean
+      def violates_length_too_short?(code), do: String.length(code) < length()
 
       @doc "Check whether a given EDRPOU too long"
       @impl BaseValidator
-      @spec violates_length_too_long?(String.t()) :: boolean
-      def violates_length_too_long?(string),
-        do: String.length(string) > length()
+      @spec violates_length_too_long?(code :: String.t()) :: boolean
+      def violates_length_too_long?(code), do: String.length(code) > length()
 
       @doc "Check whether a given EDRPOU has correct checksum"
       @impl BaseValidator
-      @spec violates_checksum?(String.t()) :: boolean
-      def violates_checksum?(string) do
+      @spec violates_checksum?(code :: String.t()) :: boolean
+      def violates_checksum?(code) do
         {digits, check_digit} =
-          string
+          code
           |> digits()
           |> digits_and_check_digit()
 

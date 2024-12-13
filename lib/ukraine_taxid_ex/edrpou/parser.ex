@@ -53,9 +53,7 @@ defmodule UkraineTaxidEx.Edrpou.Parser do
              | :length_too_long
              | :invalid_checksum}
 
-  defp generate({:error, error}), do: {:error, error}
-
-  defp generate({:ok, string}) do
+  defp generate(string) do
     digits = digits(string)
 
     %{code: string, check_sum: check_sum(digits), check_digit: check_digit(digits)}

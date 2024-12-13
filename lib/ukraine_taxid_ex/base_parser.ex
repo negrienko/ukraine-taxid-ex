@@ -1,6 +1,12 @@
 defmodule UkraineTaxidEx.BaseParser do
+  @typedoc """
+  Options for parsing:
+  - `:normalize?` - if true, pad the string to the right length (8 for EDRPOU, 10 for ITIN)
+  - `:clean?` - if true, remove non-digit characters
+  """
   @type options :: [normalize?: boolean, clean?: boolean]
-  @callback parse(string :: String.t(), options :: options()) :: {:ok, term} | {:error, atom}
+
+  @callback parse(code :: String.t(), options :: options()) :: {:ok, term} | {:error, atom}
 
   defmacro __using__(_) do
     quote do
@@ -34,6 +40,7 @@ defmodule UkraineTaxidEx.BaseParser do
       end
 
       defp generate({:error, error}), do: {:error, error}
+      defp generate({:ok, string}), do: generate(string)
     end
   end
 end

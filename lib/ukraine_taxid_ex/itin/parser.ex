@@ -59,7 +59,7 @@ defmodule UkraineTaxidEx.Itin.Parser do
 
   use UkraineTaxidEx.BaseParser
 
-  defp generate({:ok, string}) do
+  defp generate(string) do
     digits = digits(string)
 
     %{

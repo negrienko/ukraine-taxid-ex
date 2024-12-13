@@ -2,31 +2,8 @@ defmodule UkraineTaxidEx.Edrpou.Parser do
   @moduledoc """
   Parser module for EDRPOU (Unified State Register of Ukrainian Enterprises and Organizations) codes.
   Handles validation and structure creation for EDRPOU codes with additional options for normalization and cleaning.
-  """
 
-  alias UkraineTaxidEx.Edrpou
-
-  import UkraineTaxidEx.Edrpou, only: [length: 0]
-  import UkraineTaxidEx.Edrpou.CheckSum, only: [check_sum: 1]
-  import UkraineTaxidEx.Edrpou.Validator, only: [validate: 1]
-  import UkraineTaxidEx.Commons, only: [check_digit: 1, digits: 1, digits: 3, undigits: 1, ok: 1]
-
-  use UkraineTaxidEx.BaseParser
-
-  @type edrpou_string() :: String.t()
-  @type edrpou_string_or_ok() :: edrpou_string() | {:ok, edrpou_string()}
-  @type edrpou() :: Edrpou.t()
-  @type edrpou_or_error() ::
-          {:ok, Edrpou.t()}
-          | {:error,
-             :length_too_short
-             | :length_too_long
-             | :invalid_checksum}
-
-  @impl BaseParser
-
-  @doc """
-  Parses an EDRPOU code string into a structured format (clean and normalize, validate and decompose).
+  Parses an EDRPOU code string into a structured format (clean and normalize, validate and decompo).
   Options:
   - normalize?: When true, pads string to full EDRPOU length. Defaults to false.
   - clean?: When true, removes non-digit characters before processing. Defaults to false.
@@ -34,6 +11,7 @@ defmodule UkraineTaxidEx.Edrpou.Parser do
 
   ## Examples
 
+  ```elixir
       iex> UkraineTaxidEx.Edrpou.Parser.parse("00032112")
       {:ok, %UkraineTaxidEx.Edrpou{code: "00032112", check_digit: 2, check_sum: 2}}
 
@@ -54,33 +32,34 @@ defmodule UkraineTaxidEx.Edrpou.Parser do
 
       iex> UkraineTaxidEx.Edrpou.Parser.parse("123", normalize?: true)
       {:error, :invalid_checksum}
+  ```
   """
-  @spec parse(data :: edrpou_string_or_ok, options :: BaseParser.options()) ::
-          edrpou_or_error()
-  def parse(data, options \\ [normalize?: false, clean?: false])
-  def parse({:ok, edrpou_string}, options), do: parse(edrpou_string, options)
-  def parse({:error, error}, _options), do: {:error, error}
 
-  def parse(edrpou_string, options) do
-    length = (Keyword.get(options, :normalize?, false) && length()) || 0
-    clean? = Keyword.get(options, :clean?, false)
+  alias UkraineTaxidEx.Edrpou
 
-    edrpou_string
-    |> digits(length, clean?)
-    |> undigits()
-    |> validate()
-    |> generate_edrpou()
-  end
+  import UkraineTaxidEx.Edrpou, only: [length: 0]
+  import UkraineTaxidEx.Edrpou.CheckSum, only: [check_sum: 1]
+  import UkraineTaxidEx.Edrpou.Validator, only: [validate: 1]
+  import UkraineTaxidEx.Commons, only: [check_digit: 1, digits: 1, digits: 3, undigits: 1, ok: 1]
 
-  defp generate_edrpou({:error, error}), do: {:error, error}
+  use UkraineTaxidEx.BaseParser
 
-  defp generate_edrpou({:ok, edrpou_string}) do
-    digits = digits(edrpou_string)
+  @type edrpou_string() :: String.t()
+  @type edrpou() :: Edrpou.t()
+  @type edrpou_or_error() ::
+          {:ok, Edrpou.t()}
+          | {:error,
+             :length_too_short
+             | :length_too_long
+             | :invalid_checksum}
 
-    %{code: edrpou_string, check_sum: check_sum(digits), check_digit: check_digit(digits)}
-    |> create_struct()
+  defp generate({:error, error}), do: {:error, error}
+
+  defp generate({:ok, string}) do
+    digits = digits(string)
+
+    %{code: string, check_sum: check_sum(digits), check_digit: check_digit(digits)}
+    |> to_struct()
     |> ok()
   end
-
-  defp create_struct(map), do: struct(Edrpou, map)
 end

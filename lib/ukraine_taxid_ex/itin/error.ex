@@ -12,10 +12,10 @@ defmodule UkraineTaxidEx.Itin.Error do
     :length_to_short
   ]
   @messages [
-    invalid_length: "EDRPOU violates the required length",
-    invalid_checksum: "EDRPOU checksum is invalid",
-    length_to_long: "EDRPOU longer then required length",
-    length_to_short: "EDRPOU shorter then required length"
+    invalid_length: "ITIN violates the required length",
+    invalid_checksum: "ITIN checksum is invalid",
+    length_to_long: "ITIN longer then required length",
+    length_to_short: "ITIN shorter then required length"
   ]
 
   @spec message(error()) :: String.t()

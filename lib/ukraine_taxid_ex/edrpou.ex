@@ -6,8 +6,6 @@ defmodule UkraineTaxidEx.Edrpou do
   """
 
   @length 8
-  alias UkraineTaxidEx.Edrpou.Parser
-  use UkraineTaxidEx.Base
 
   @type t :: %__MODULE__{
           code: String.t(),
@@ -17,8 +15,5 @@ defmodule UkraineTaxidEx.Edrpou do
 
   defstruct code: nil, check_digit: nil, check_sum: nil
 
-  @impl Base
-  @spec parse(data :: {:ok, String.t()} | String.t(), options :: Keyword.t()) ::
-          {:ok, t()} | {:error, atom()}
-  defdelegate parse(data, options \\ [normalize?: false, clean?: false]), to: Parser
+  use UkraineTaxidEx.Base
 end

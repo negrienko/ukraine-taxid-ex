@@ -17,7 +17,7 @@ defmodule UkraineTaxidEx.BaseParser do
       @type string_or_ok() :: String.t() | {:ok, String.t()}
       @type struct_or_error() :: {:ok, term} | {:error, atom()}
 
-      @struct_module Module.split(__MODULE__) |> Enum.slice(0..-2//1) |> Module.safe_concat()
+      @struct_module Module.split(__MODULE__) |> Enum.slice(0..-2//1) |> Module.concat()
       # def struct_module(), do: @struct_module
 
       defp to_struct(map), do: struct(@struct_module, map)

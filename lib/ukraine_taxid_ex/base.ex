@@ -11,8 +11,8 @@ defmodule UkraineTaxidEx.Base do
 
       alias UkraineTaxidEx.{Base, Serialize, Commons}
 
-      @parse_module (Module.split(__MODULE__) ++ ["Parser"]) |> Module.safe_concat()
-      # def parse_module(), do: @parse_module
+      @parse_module (Module.split(__MODULE__) ++ ["Parser"]) |> Module.concat()
+      def parse_module(), do: @parse_module
 
       @impl Base
       @spec to_map(data :: t()) :: map()

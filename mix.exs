@@ -3,6 +3,8 @@ defmodule UkraineTaxidEx.MixProject do
 
   @app :ukraine_tax_id
   @module UkraineTaxidEx
+  @author "Danylo Negrienko"
+  @authors [@author]
   @source_url "https://g.tulz.dev/opensource/ukraine-taxid-ex"
   @docs_url "https://hexdocs.pm/#{@app}"
   @version "0.1.3"
@@ -50,6 +52,9 @@ defmodule UkraineTaxidEx.MixProject do
 
   defp docs() do
     [
+      authors: @authors,
+      cover: "assets/cover.png",
+      # logo: "assets/logo.svg",
       main: "readme",
       name: "#{@module}",
       source_ref: "v#{@version}",

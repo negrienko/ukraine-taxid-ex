@@ -24,7 +24,7 @@ defmodule UkraineTaxidEx.BaseParser do
 
       @impl BaseParser
       @spec parse(data :: string_or_ok, options :: BaseParser.options()) :: struct_or_error()
-      def parse(data, options \\ [normalize?: false, clean?: false])
+      def parse(data, options \\ [normalize?: false, clean?: true])
       def parse({:ok, string}, options), do: parse(string, options)
       def parse({:error, error}, _options), do: {:error, error}
 

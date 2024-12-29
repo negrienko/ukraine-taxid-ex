@@ -5,7 +5,7 @@ defmodule UkraineTaxidEx.MixProject do
   @module UkraineTaxidEx
   @source_url "https://g.tulz.dev/opensource/ukraine-taxid-ex"
   @docs_url "https://hexdocs.pm/#{@app}"
-  @version "0.1.2"
+  @version "0.1.3"
 
   def project do
     [
